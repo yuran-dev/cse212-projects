@@ -1,5 +1,5 @@
 public static class Arrays
-{
+{       
     /// <summary>
     /// This function will produce an array of size 'length' starting with 'number' followed by multiples of 'number'.  For 
     /// example, MultiplesOf(7, 5) will result in: {7, 14, 21, 28, 35}.  Assume that length is a positive
@@ -8,12 +8,19 @@ public static class Arrays
     /// <returns>array of doubles that are the multiples of the supplied number</returns>
     public static double[] MultiplesOf(double number, int length)
     {
-        // TODO Problem 1 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
+        // Step 1: Create an array of size 'length' to store the multiples
+        double[] multiples = new double[length];
 
-        return []; // replace this return statement with your own
+        // Step 2: Loop through the array indices from 0 to length-1
+        for (int i = 0; i < length; i++)
+        {
+            // Step 3: Calculate the multiple for the current index
+            // The first multiple is 'number', then 2*number, 3*number, ..., length*number
+            multiples[i] = number * (i + 1);
+        }
+
+        // Step 4: Return the array with all the multiples
+        return multiples;
     }
 
     /// <summary>
@@ -25,9 +32,23 @@ public static class Arrays
     /// </summary>
     public static void RotateListRight(List<int> data, int amount)
     {
-        // TODO Problem 2 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
+        // Step 1: Calculate the index where we will "cut" the list.
+        // We want the last 'amount' elements to move to the front.
+        int cutIndex = data.Count - amount;
+
+        // Step 2: Extract the last 'amount' elements using GetRange
+        List<int> endPart = data.GetRange(cutIndex, amount);
+
+        // Step 3: Extract the remaining elements at the start
+        List<int> startPart = data.GetRange(0, cutIndex);
+
+        // Step 4: Clear the original list to rebuild it
+        data.Clear();
+
+        // Step 5: Add the last 'amount' elements to the start
+        data.AddRange(endPart);
+
+        // Step 6: Add the remaining elements after them
+        data.AddRange(startPart);
     }
 }
