@@ -21,9 +21,30 @@ public static class SetsAndMaps
     /// <param name="words">An array of 2-character words (lowercase, no duplicates)</param>
     public static string[] FindPairs(string[] words)
     {
-        // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
-    }
+        var seen = new HashSet<string>();
+        var result = new List<string>();
+
+        foreach (var word in words)
+        {
+            // ignora casos como "aa"
+            if (word[0] == word[1])
+                continue;
+
+            // cria a palavra invertida
+            var reversed = $"{word[1]}{word[0]}";
+
+            // se já vimos a invertida, temos um par
+            if (seen.Contains(reversed))
+            {
+                result.Add($"{reversed} & {word}");
+            }
+            else
+            {
+                seen.Add(word);
+            }
+        }
+        return result.ToArray();
+            }
 
     /// <summary>
     /// Read a census file and summarize the degrees (education)
@@ -38,11 +59,24 @@ public static class SetsAndMaps
     /// <returns>fixed array of divisors</returns>
     public static Dictionary<string, int> SummarizeDegrees(string filename)
     {
-        var degrees = new Dictionary<string, int>();
+            var degrees = new Dictionary<string, int>();
+
         foreach (var line in File.ReadLines(filename))
         {
             var fields = line.Split(",");
-            // TODO Problem 2 - ADD YOUR CODE HERE
+
+            // Pegando o grau de escolaridade (4ª coluna, índice 3)
+            var degree = fields[3].Trim();
+
+            // Se o grau já está no dicionário, incrementa; caso contrário, adiciona
+            if (degrees.ContainsKey(degree))
+            {
+                degrees[degree]++;
+            }
+            else
+            {
+                degrees[degree] = 1;
+            }
         }
 
         return degrees;
@@ -66,8 +100,36 @@ public static class SetsAndMaps
     /// </summary>
     public static bool IsAnagram(string word1, string word2)
     {
-        // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
+            // Remove spaces and convert to lowercase
+        word1 = word1.Replace(" ", "").ToLower();
+        word2 = word2.Replace(" ", "").ToLower();
+
+        // Different lengths cannot be anagrams
+        if (word1.Length != word2.Length)
+            return false;
+
+        // Count letters in the first word
+        var letterCounts = new Dictionary<char, int>();
+        foreach (var c in word1)
+        {
+            if (letterCounts.ContainsKey(c))
+                letterCounts[c]++;
+            else
+                letterCounts[c] = 1;
+        }
+
+        // Check letters in the second word
+        foreach (var c in word2)
+        {
+            if (!letterCounts.ContainsKey(c))
+                return false;
+
+            letterCounts[c]--;
+            if (letterCounts[c] < 0)
+                return false;
+        }
+
+        return true;
     }
 
     /// <summary>
